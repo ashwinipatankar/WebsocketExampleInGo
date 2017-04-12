@@ -43,12 +43,14 @@ func main() {
 			for {
 				mType, msg, err := conn.ReadMessage()
 				if err != nil {
+					tCurrent = time.Since(tNow)
+					fmt.Println("Before Closing connection Total number of requests received: ", messageCounter, "In time: ", tCurrent)
 					conn.Close()
 					return
 				}
 				messageCounter++
 				fmt.Println(mType, string(msg))
-				fmt.Println("Total number of requests received: ", messageCounter, "In time: ", time.Since(tNow))
+				//fmt.Println("Total number of requests received: ", messageCounter, "In time: ", time.Since(tNow))
 				/*
 					err = conn.WriteMessage(mType, msg)
 					if err != nil {
@@ -57,7 +59,7 @@ func main() {
 					}*/
 			}
 			tCurrent = time.Since(tNow)
-			fmt.Println("Total number of requests received: ", messageCounter, "In time: ", tCurrent)
+			//fmt.Println("Total number of requests received: ", messageCounter, "In time: ", tCurrent)
 		}(conn)
 		fmt.Println("Total number of requests received: ", messageCounter, "In time: ", tCurrent)
 		go func(conn *websocket.Conn) {
